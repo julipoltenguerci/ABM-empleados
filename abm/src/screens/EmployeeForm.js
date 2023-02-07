@@ -29,6 +29,9 @@ const EmployeeForm = () => {
     last_name: "",
     email: "",
     phone_number: null,
+    hire_date: "",
+    salary: null,
+    commission_pct: null,
   });
 
   const dispatch = useDispatch();
