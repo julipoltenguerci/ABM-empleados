@@ -79,13 +79,18 @@ const columns = [
 ];
 
 export const EmployeeList = () => {
+  //HOOKS -----------------------
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
   const employees = useSelector((state) => state.employeesSlice.employees);
 
   const [page, setPage] = useState(0);
+
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  // TABLE FUNCTIONS
   const handleChangePage = useCallback((_, newPage) => setPage(newPage), []);
 
   const handleChangeRowsPerPage = useCallback((event) => {

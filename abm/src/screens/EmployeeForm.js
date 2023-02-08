@@ -3,14 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Container, TextField } from "@mui/material";
-
 import { addEmployee, editEmployee } from "../actions/employeeActions";
 import { PageTitle } from "../components/PageTitle";
 
 export const EmployeeForm = () => {
+  //HOOKS -------------------------
   const dispatch = useDispatch();
+
   const { employee_id } = useParams();
+
   const navigate = useNavigate();
+
   const employees = useSelector((state) => state.employeesSlice.employees);
 
   const [employee, setEmployee] = useState({
@@ -23,6 +26,7 @@ export const EmployeeForm = () => {
     salary: "",
     commission_pct: "",
   });
+
   const [isEditing, setIsEditing] = useState(true);
 
   const inputOnChange = useCallback(
@@ -34,9 +38,11 @@ export const EmployeeForm = () => {
     [employee]
   );
 
+  //Functions -------------------------
+
   const handleSaveNewEmployee = useCallback(() => {
     dispatch(addEmployee(employee));
-    // Cambiar alert por algo de mui.
+    // Cambiar alert por alguno de mui.
     alert("Empleado agregado exitosamente");
     // Mover este navigate al onClose del alert de mui.
     navigate("/");

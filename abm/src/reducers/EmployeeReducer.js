@@ -8,16 +8,6 @@ import { v4 as uuidv4 } from "uuid";
 const initialState = {
   employees: [
     {
-      employee_id: "4e451e26-9328-4df5-9f64-5689c3762da3",
-      first_name: "Julieta",
-      last_name: "Polten Guerci",
-      email: "julieta.polten@vortex-it.com",
-      phone_number: 3512436997,
-      hire_date: "01/02/2023",
-      salary: 170000,
-      commission_pct: 0,
-    },
-    {
       employee_id: "882ab9a0-d735-485a-9d16-e1ad47b7a0e2",
       first_name: "Luciano",
       last_name: "Soria",
@@ -35,6 +25,16 @@ const initialState = {
       phone_number: 3514445555,
       hire_date: "01/07/2022",
       salary: 190000,
+      commission_pct: 0,
+    },
+    {
+      employee_id: "4e451e26-9328-4df5-9f64-5689c3762da3",
+      first_name: "Julieta",
+      last_name: "Polten Guerci",
+      email: "julieta.polten@vortex-it.com",
+      phone_number: 3512436997,
+      hire_date: "01/02/2023",
+      salary: 170000,
       commission_pct: 0,
     },
   ],

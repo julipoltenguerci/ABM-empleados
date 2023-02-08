@@ -32,7 +32,7 @@ export const REMOVE_EMPLOYEE = "REMOVE_EMPLOYEE";
   commission_pct: 0,
 },] */
 
-// ACTIONS CREATORS --------
+// ACTIONS CREATORS --------------------
 
 export const addEmployee = (payload) => ({
   type: ADD_EMPLOYEE,
