@@ -3,29 +3,19 @@ import { Stack } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import img from "../assets/static/Logo_Vortex.png";
 
-const NavBar = () => {
-  // HOOKS
+export const Header = () => {
   const navigate = useNavigate();
 
-  //FUNCTIONS
-  const handleOnClickHome = () => {
-    navigate("/");
-  };
-
-  const handleOnClickNew = () => {
-    navigate("/add-employee");
-  };
-
-  const handleOnClickList = () => {
-    navigate("/employees");
-  };
+  const handleOnClickHome = () => navigate("/");
+  const handleOnClickNew = () => navigate("/employee");
+  const handleOnClickList = () => navigate("/employees");
 
   return (
     <Box>
       <AppBar position="static" color="default">
         <Toolbar>
           <IconButton
-            size="x-small"
+            size="small"
             edge="start"
             color="inherit"
             aria-label="logo"
@@ -48,5 +38,3 @@ const NavBar = () => {
     </Box>
   );
 };
-
-export default NavBar;
