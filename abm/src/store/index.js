@@ -1,10 +1,9 @@
 import { combineReducers, legacy_createStore } from "redux";
-import EmployeeReducer from "../reducers/EmployeeReducer";
+
+import { employeeReducer } from "../reducers/EmployeeReducer";
 
 const rootReducer = combineReducers({
-  employeesSlice: EmployeeReducer,
+  employeesSlice: employeeReducer,
 });
 
-const store = legacy_createStore(rootReducer);
-
-export default store;
+export const store = legacy_createStore(rootReducer);

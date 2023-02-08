@@ -1,26 +1,16 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { addEmployee } from "../actions/EmployeeActions";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
+import { Box, Button, Container, TextField } from "@mui/material";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(4),
-  textAlign: "center",
-  fontSize: 20,
-  color: theme.palette.text.secondary,
-}));
+import { addEmployee, editEmployee } from "../actions/employeeActions";
+import { PageTitle } from "../components/PageTitle";
 
-const EmployeeForm = () => {
-  // HOOKS ----------
+export const EmployeeForm = () => {
+  const dispatch = useDispatch();
+  const { employee_id } = useParams();
+  const navigate = useNavigate();
   const employees = useSelector((state) => state.employeesSlice.employees);
 
   const [employee, setEmployee] = useState({
@@ -28,29 +18,60 @@ const EmployeeForm = () => {
     first_name: "",
     last_name: "",
     email: "",
-    phone_number: null,
+    phone_number: "",
     hire_date: "",
-    salary: null,
-    commission_pct: null,
+    salary: "",
+    commission_pct: "",
   });
+  const [isEditing, setIsEditing] = useState(true);
 
-  const dispatch = useDispatch();
+  const inputOnChange = useCallback(
+    (key, value) =>
+      setEmployee({
+        ...employee,
+        [key]: value,
+      }),
+    [employee]
+  );
 
-  const inputOnChange = (event) => setEmployee(event.target.value);
-
-  const buttonOnClick = () => {
+  const handleSaveNewEmployee = useCallback(() => {
     dispatch(addEmployee(employee));
-    setEmployee("");
-  };
+    // Cambiar alert por algo de mui.
+    alert("Empleado agregado exitosamente");
+    // Mover este navigate al onClose del alert de mui.
+    navigate("/");
+  }, [dispatch, employee, navigate]);
+
+  const handleEditEmployee = useCallback(() => {
+    dispatch(editEmployee(employee));
+    setIsEditing(false);
+  }, [dispatch, employee]);
+
+  const handleCancel = useCallback(() => {
+    setEmployee(
+      employees.find((employee) => employee.employee_id === employee_id)
+    );
+    setIsEditing(false);
+  }, [employee_id, employees]);
+
+  useEffect(() => {
+    if (employee_id) {
+      const employeeToEdit = employees.find(
+        (employee) => employee.employee_id === employee_id
+      );
+
+      if (employeeToEdit) {
+        setEmployee({ ...employeeToEdit });
+        setIsEditing(false);
+      }
+    }
+  }, [employee_id, employees]);
 
   return (
     <>
-      <CssBaseline />
-      <Box sx={{ width: "100%" }}>
-        <Stack spacing={2}>
-          <Item>Agregar Nuevo Empleado</Item>
-        </Stack>
-      </Box>
+      <PageTitle>
+        {employee_id ? "Ver Empleado" : "Agregar Nuevo Empleado"}
+      </PageTitle>
       <Container
         sx={{ maxWidth: "sm", bgcolor: "#b0bec5", height: "75vh", mt: 4 }}
       >
@@ -69,20 +90,20 @@ const EmployeeForm = () => {
             <TextField
               id="outlined-multiline-flexible"
               label="Nombre"
-              multiline
-              maxRows={4}
-              //value={employee.first_name}
-              onChange={inputOnChange}
-              onSubmit={inputOnChange}
+              value={employee.first_name}
+              disabled={!isEditing}
+              onChange={(event) =>
+                inputOnChange("first_name", event.target.value)
+              }
             />
             <TextField
               id="outlined-textarea"
               label="Apellido"
-              multiline
-              maxRows={4}
-              //value={employee.last_name}
-              onChange={inputOnChange}
-              onSubmit={inputOnChange}
+              value={employee.last_name}
+              disabled={!isEditing}
+              onChange={(event) =>
+                inputOnChange("last_name", event.target.value)
+              }
             />
           </div>
 
@@ -90,47 +111,68 @@ const EmployeeForm = () => {
             <TextField
               id="outlined-multiline-flexible"
               label="E-mail"
-              multiline
-              maxRows={4}
-              //value={employee.email}
-              onChange={inputOnChange}
-              onSubmit={inputOnChange}
+              value={employee.email}
+              disabled={!isEditing}
+              onChange={(event) => inputOnChange("email", event.target.value)}
             />
-            <TextField id="outlined-textarea" label="Teléfono" multiline />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Teléfono"
+              value={employee.phone_number}
+              disabled={!isEditing}
+              onChange={(event) =>
+                inputOnChange("phone_number", event.target.value)
+              }
+            />
           </div>
 
           <div>
             <TextField
               id="outlined-multiline-flexible"
               label="Fecha Contratación"
-              type="date"
-              multiline
-              maxRows={4}
+              value={employee.hire_date}
+              disabled={!isEditing}
+              onChange={(event) =>
+                inputOnChange("hire_date", event.target.value)
+              }
             />
-            <TextField id="outlined-textarea" label="Salario Bruto" multiline />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Salario Bruto"
+              value={employee.salary}
+              disabled={!isEditing}
+              onChange={(event) => inputOnChange("salary", event.target.value)}
+            />
           </div>
           <div>
             <TextField
               id="outlined-multiline-flexible"
               label="Comisión"
-              multiline
-              maxRows={4}
+              value={employee.commission_pct}
+              disabled={!isEditing}
+              onChange={(event) =>
+                inputOnChange("commission_pct", event.target.value)
+              }
             />
           </div>
-          <div>
-            <Button onClick={buttonOnClick}>Agregar Empleado</Button>
-            <br />
-
-            <div>
-              {employees.map((employee, index) => (
-                <div key={index}>{employee}</div>
-              ))}
-            </div>
-          </div>
+          <br />
+          <br />
+          {employee_id ? (
+            isEditing ? (
+              <>
+                <Button onClick={handleEditEmployee}>Guardar Empleado</Button>
+                <Button onClick={handleCancel}>Cancelar</Button>
+              </>
+            ) : (
+              <Button onClick={() => setIsEditing(true)}>
+                Editar Empleado
+              </Button>
+            )
+          ) : (
+            <Button onClick={handleSaveNewEmployee}>Agregar Empleado</Button>
+          )}
         </Box>
       </Container>
     </>
   );
 };
-
-export default EmployeeForm;

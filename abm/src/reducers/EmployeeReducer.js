@@ -2,7 +2,8 @@ import {
   ADD_EMPLOYEE,
   EDIT_EMPLOYEE,
   REMOVE_EMPLOYEE,
-} from "../actions/EmployeeActions";
+} from "../actions/employeeActions";
+import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   employees: [
