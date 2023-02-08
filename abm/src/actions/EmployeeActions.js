@@ -1,4 +1,6 @@
-import * as actions from "../actions/ActionsType";
+export const ADD_EMPLOYEE = "ADD_EMPLOYEE";
+export const EDIT_EMPLOYEE = "EDIT_EMPLOYEE";
+export const REMOVE_EMPLOYEE = "REMOVE_EMPLOYEE";
 /* const employees = [{
   employee_id: 1,
   first_name: "Julieta",
@@ -33,10 +35,16 @@ import * as actions from "../actions/ActionsType";
 // ACTIONS CREATORS --------
 
 export const addEmployee = (payload) => ({
-  type: actions.ADD_EMPLOYEE,
+  type: ADD_EMPLOYEE,
   payload,
 });
+
+export const editEmployee = (payload) => ({
+  type: EDIT_EMPLOYEE,
+  payload,
+});
+
 export const removeEmployee = (payload) => ({
-  type: actions.REMOVE_EMPLOYEE,
+  type: REMOVE_EMPLOYEE,
   payload,
 });

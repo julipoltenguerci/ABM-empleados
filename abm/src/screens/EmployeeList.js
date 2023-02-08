@@ -11,6 +11,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import ActionesButtons from "../common/ActionsButtons";
 
 const columns = [
   { id: "id", label: "ID", minWidth: 50, align: "center" },
@@ -29,26 +30,32 @@ const columns = [
     align: "center",
   },
   {
-    id: "phomeNumber",
+    id: "phoneNumber",
     label: "Teléfono",
     minWidth: 80,
     align: "center",
   },
   {
-    id: "salario",
+    id: "fechaContratacion",
     label: "Fecha Contratación",
     minWidth: 80,
     align: "center",
   },
   {
-    id: "fechaContratacion",
-    label: "salario",
+    id: "salario",
+    label: "Salario",
     minWidth: 80,
     align: "center",
   },
   {
     id: "comision",
     label: "Comision",
+    minWidth: 80,
+    align: "center",
+  },
+  {
+    id: "actions",
+    label: "Acciones",
     minWidth: 80,
     align: "center",
   },
@@ -59,9 +66,9 @@ function createData(
   name,
   lastname,
   email,
-  phomeNumber,
-  salario,
+  phoneNumber,
   fechaContratacion,
+  salario,
   comision
 ) {
   return {
@@ -69,16 +76,25 @@ function createData(
     name,
     lastname,
     email,
-    phomeNumber,
-    salario,
+    phoneNumber,
     fechaContratacion,
+    salario,
     comision,
   };
 }
 
 const rows = [
   //primera row no se visualiza, corregir
-  createData(0, "Juan", "Perez", "hhh@hhh", "3519998887", "01/01/2022", 2000),
+  createData(
+    0,
+    "Juan",
+    "Perez",
+    "hhh@hhh",
+    "3519998887",
+    "01/01/2022",
+    2000,
+    20
+  ),
   createData(
     1,
     "Juan",
@@ -112,7 +128,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function EmployeeList() {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -173,7 +189,7 @@ export default function EmployeeList() {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 25, 50, 100]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}

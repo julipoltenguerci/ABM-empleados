@@ -9,15 +9,17 @@ const Home = () => {
     navigate("/add-employee");
   };
   return (
-    <div>
-      <Button
-        variant="outlined"
-        onClick={handleOnClick}
-        href="#outlined-buttons"
-      >
-        Agregar nuevo empleado
-      </Button>
-    </div>
+    <>
+      <div>
+        <Button
+          variant="outlined"
+          onClick={handleOnClick}
+          href="#outlined-buttons"
+        >
+          Agregar nuevo empleado
+        </Button>
+      </div>
+    </>
   );
 };
 //<button onClick={handleOnClick}>Agregar nuevo empleado</button>

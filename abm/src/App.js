@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/add-employee" element={<EmployeeForm />} />
+        <Route path="/edit-employee:id" element={<EmployeeForm />} />
         <Route path="/employees" element={<EmployeeList />} />
       </Routes>
     </BrowserRouter>

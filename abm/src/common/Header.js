@@ -1,14 +1,13 @@
 import { AppBar, Toolbar, IconButton, Button, Box } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useNavigate } from "react-router-dom";
-import img from "../assets/static/Vortex.png";
+import img from "../assets/static/Logo_Vortex.png";
 
 const NavBar = () => {
   // HOOKS
   const navigate = useNavigate();
 
   //FUNCTIONS
-
   const handleOnClickHome = () => {
     navigate("/");
   };
@@ -26,7 +25,7 @@ const NavBar = () => {
       <AppBar position="static" color="default">
         <Toolbar>
           <IconButton
-            size="small"
+            size="x-small"
             edge="start"
             color="inherit"
             aria-label="logo"
