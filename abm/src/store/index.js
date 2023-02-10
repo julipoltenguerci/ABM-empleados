@@ -1,9 +1,9 @@
-import { combineReducers, legacy_createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 
 import { employeeReducer } from "../reducers/EmployeeReducer";
 
-const rootReducer = combineReducers({
-  employeesSlice: employeeReducer,
+export const store = configureStore({
+  reducer: {
+    employeesSlice: employeeReducer,
+  },
 });
-
-export const store = legacy_createStore(rootReducer);

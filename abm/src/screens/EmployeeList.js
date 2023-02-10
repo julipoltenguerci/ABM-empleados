@@ -1,5 +1,5 @@
 import React from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -16,53 +16,17 @@ import {
 import { Delete, Visibility } from "@mui/icons-material";
 import { removeEmployee } from "../actions/employeeActions";
 import { PageTitle } from "../components/PageTitle";
-//import ActionesButtons from "../components/ActionsButtons";
 
 const columns = [
   { id: "employee_id", label: "ID", minWidth: 50, align: "center" },
-  { id: "first_name", label: "Nombre", minWidth: 80, align: "center" },
-  {
-    id: "last_name",
-    label: "Apellido",
-    minWidth: 80,
-    align: "center",
-  },
-  {
-    id: "email",
-    label: "E-mail",
-    minWidth: 80,
-    align: "center",
-  },
-  {
-    id: "phone_number",
-    label: "Teléfono",
-    minWidth: 80,
-    align: "center",
-  },
-  {
-    id: "hire_date",
-    label: "Fecha Contratación",
-    minWidth: 80,
-    align: "center",
-  },
-  {
-    id: "salary",
-    label: "salario",
-    minWidth: 80,
-    align: "center",
-    format: (value) => `$${value}`,
-  },
-  {
-    id: "commission_pct",
-    label: "Comision",
-    minWidth: 80,
-    align: "center",
-    format: (value) => `${value}%`,
-  },
+  { id: "first_name", label: "Nombre", minWidth: 50, align: "center" },
+  { id: "last_name", label: "Apellido", minWidth: 50, align: "center" },
+  { id: "email", label: "E-mail", minWidth: 50, align: "center" },
+  { id: "phone_number", label: "Teléfono", minWidth: 50, align: "center" },
   {
     id: "actions",
     label: "Acciones",
-    minWidth: 80,
+    minWidth: 50,
     align: "center",
     component: (employee, viewAction, deleteAction) => (
       <>
@@ -79,7 +43,7 @@ const columns = [
 ];
 
 export const EmployeeList = () => {
-  //HOOKS -----------------------
+  // --------- HOOKS ---------
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -88,9 +52,14 @@ export const EmployeeList = () => {
 
   const [page, setPage] = useState(0);
 
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // TABLE FUNCTIONS
+  const employeesToDisplay = useMemo(
+    () => employees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [employees, page, rowsPerPage]
+  );
+
+  // --------- FUNCTIONS ---------
   const handleChangePage = useCallback((_, newPage) => setPage(newPage), []);
 
   const handleChangeRowsPerPage = useCallback((event) => {
@@ -112,7 +81,7 @@ export const EmployeeList = () => {
     <>
       <PageTitle>Gestor de Empleados - Vortex IT</PageTitle>
       <Paper sx={{ width: "100%" }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ maxHeight: 500 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -128,15 +97,9 @@ export const EmployeeList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {employees
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.employee_id}
-                  >
+              {employeesToDisplay.length ? (
+                employeesToDisplay.map((row) => (
+                  <TableRow hover tabIndex={-1} key={row.employee_id}>
                     {columns.map((column) => {
                       const value = row[column.id];
 
@@ -155,12 +118,22 @@ export const EmployeeList = () => {
                       );
                     })}
                   </TableRow>
-                ))}
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    sx={{ color: "#9c27b0", textAlign: "center" }}
+                  >
+                    No hay RRHH disponibles.
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 10, 25, 100]}
           component="div"
           count={employees.length}
           rowsPerPage={rowsPerPage}

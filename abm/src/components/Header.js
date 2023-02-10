@@ -4,33 +4,31 @@ import { useNavigate } from "react-router-dom";
 import img from "../assets/static/Logo_Vortex.png";
 
 export const Header = () => {
+  // --------- HOOKS ---------
   const navigate = useNavigate();
 
+  // --------- FUNCTIONS ---------
   const handleOnClickHome = () => navigate("/");
-  const handleOnClickNew = () => navigate("/employee");
-  const handleOnClickList = () => navigate("/employees");
+  const handleOnClickForm = () => navigate("/employee");
 
   return (
     <Box>
       <AppBar position="static" color="default">
-        <Toolbar>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
           <IconButton
-            size="small"
+            size="large"
             edge="start"
             color="inherit"
             aria-label="logo"
             component="div"
             onClick={handleOnClickHome}
-            sx={{ flexGrow: 1 }}
+            sx={{}}
           >
             <img src={img} alt="logo_vortex"></img>
           </IconButton>
           <Stack direction="row" spacing={2}>
-            <Button onClick={handleOnClickNew} color="inherit">
+            <Button onClick={handleOnClickForm} color="inherit">
               Nuevo Empleado
-            </Button>
-            <Button onClick={handleOnClickList} color="inherit">
-              Nuestros Empleados
             </Button>
           </Stack>
         </Toolbar>
