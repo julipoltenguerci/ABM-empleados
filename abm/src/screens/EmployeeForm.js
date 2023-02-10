@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { addEmployee, editEmployee } from "../actions/employeeActions";
+import { Dialog } from "../components/Dialog";
 import { PageTitle } from "../components/PageTitle";
 import { Box, Button, Container, TextField } from "@mui/material";
 
@@ -26,6 +27,7 @@ export const EmployeeForm = () => {
   const [employee, setEmployee] = useState(getEmptyEmployee());
 
   const [isEditing, setIsEditing] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     if (employee_id) {
@@ -55,16 +57,13 @@ export const EmployeeForm = () => {
 
   const handleAddNewEmployee = useCallback(() => {
     dispatch(addEmployee(employee));
-    alert("¡Se ha guardado correctamente el empleado!");
-    navigate("/");
-  }, [dispatch, employee, navigate]);
+    setIsDialogOpen(true);
+  }, [dispatch, employee]);
 
   const handleEditEmployee = useCallback(() => {
     dispatch(editEmployee(employee));
-    setIsEditing(false);
-    alert("¡Se ha editado correctamente el empleado!");
-    navigate("/");
-  }, [dispatch, employee, navigate]);
+    setIsDialogOpen(true);
+  }, [dispatch, employee]);
 
   const handleCancel = useCallback(() => {
     setEmployee(
@@ -72,6 +71,16 @@ export const EmployeeForm = () => {
     );
     setIsEditing(false);
   }, [employee_id, employees]);
+
+  const handleCloseDialog = useCallback(() => {
+    setIsDialogOpen(false);
+
+    if (employee_id) {
+      setIsEditing(false);
+    } else {
+      navigate("/");
+    }
+  }, [employee_id, navigate]);
 
   return (
     <>
@@ -214,6 +223,16 @@ export const EmployeeForm = () => {
           </div>
         </Box>
       </Container>
+      <Dialog
+        isOpen={isDialogOpen}
+        title={
+          employee_id
+            ? "¡Se ha editado correctamente el empleado!"
+            : "¡Se ha guardado correctamente el empleado!"
+        }
+        closeLabel="Aceptar"
+        onClose={handleCloseDialog}
+      ></Dialog>
     </>
   );
 };

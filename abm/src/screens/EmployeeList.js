@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { Delete, Visibility } from "@mui/icons-material";
 import { removeEmployee } from "../actions/employeeActions";
+import { Dialog } from "../components/Dialog";
 import { PageTitle } from "../components/PageTitle";
 
 const columns = [
@@ -54,6 +55,8 @@ export const EmployeeList = () => {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [employeeToDelete, setEmployeeToDelete] = useState();
+
   const employeesToDisplay = useMemo(
     () => employees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [employees, page, rowsPerPage]
@@ -73,9 +76,14 @@ export const EmployeeList = () => {
   );
 
   const handleDeleteAction = useCallback(
-    (employee) => dispatch(removeEmployee(employee)),
-    [dispatch]
+    (employee) => setEmployeeToDelete(employee),
+    []
   );
+
+  const handleAcceptDialog = useCallback(() => {
+    dispatch(removeEmployee(employeeToDelete));
+    setEmployeeToDelete();
+  }, [dispatch, employeeToDelete]);
 
   return (
     <>
@@ -142,6 +150,16 @@ export const EmployeeList = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      {employeeToDelete && (
+        <Dialog
+          isOpen={true}
+          title={`¿Desea eliminar el empleado ${employeeToDelete.last_name} ${employeeToDelete.first_name}?`}
+          closeLabel="Cancelar"
+          onClose={() => setEmployeeToDelete()}
+          acceptLabel="Eliminar"
+          onAccept={handleAcceptDialog}
+        ></Dialog>
+      )}
     </>
   );
 };
