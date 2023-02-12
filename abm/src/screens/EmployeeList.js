@@ -1,5 +1,5 @@
 import React from "react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -42,7 +42,6 @@ const columns = [
     ),
   },
 ];
-
 export const EmployeeList = () => {
   // --------- HOOKS ---------
   const dispatch = useDispatch();
@@ -57,18 +56,19 @@ export const EmployeeList = () => {
 
   const [employeeToDelete, setEmployeeToDelete] = useState();
 
-  const employeesToDisplay = useMemo(
-    () => employees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [employees, page, rowsPerPage]
-  );
-
   // --------- FUNCTIONS ---------
+
   const handleChangePage = useCallback((_, newPage) => setPage(newPage), []);
 
   const handleChangeRowsPerPage = useCallback((event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   }, []);
+
+  const employeesToDisplay = useMemo(
+    () => employees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [employees, page, rowsPerPage]
+  );
 
   const handleViewAction = useCallback(
     (employee) => navigate(`/employee/${employee.employee_id}`),
@@ -106,27 +106,29 @@ export const EmployeeList = () => {
             </TableHead>
             <TableBody>
               {employeesToDisplay.length ? (
-                employeesToDisplay.map((row) => (
-                  <TableRow hover tabIndex={-1} key={row.employee_id}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
+                employeesToDisplay
+                  //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow hover tabIndex={-1} key={row.employee_id}>
+                      {columns.map((column) => {
+                        const value = row[column.id];
 
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.component
-                            ? column.component(
-                                row,
-                                handleViewAction,
-                                handleDeleteAction
-                              )
-                            : column.format
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.component
+                              ? column.component(
+                                  row,
+                                  handleViewAction,
+                                  handleDeleteAction
+                                )
+                              : column.format
+                              ? column.format(value)
+                              : value}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))
               ) : (
                 <TableRow>
                   <TableCell

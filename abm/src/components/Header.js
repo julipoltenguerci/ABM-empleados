@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import img from "../assets/static/Logo_Vortex.png";
 
 export const Header = () => {
-  // --------- HOOKS ---------
+  // --------- HOOK ---------
   const navigate = useNavigate();
 
   // --------- FUNCTIONS ---------
@@ -22,11 +22,13 @@ export const Header = () => {
             aria-label="logo"
             component="div"
             onClick={handleOnClickHome}
-            sx={{}}
           >
             <img src={img} alt="logo_vortex"></img>
           </IconButton>
           <Stack direction="row" spacing={2}>
+            <Button onClick={handleOnClickHome} color="inherit">
+              Inicio
+            </Button>
             <Button onClick={handleOnClickForm} color="inherit">
               Nuevo Empleado
             </Button>

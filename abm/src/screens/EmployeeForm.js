@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
@@ -21,12 +21,19 @@ const getEmptyEmployee = () => ({
 export const EmployeeForm = () => {
   // --------- HOOKS ---------
   const dispatch = useDispatch();
+
   const { employee_id } = useParams();
+
   const navigate = useNavigate();
+
+  const formRef = useRef();
+
   const employees = useSelector((state) => state.employeesSlice.employees);
+
   const [employee, setEmployee] = useState(getEmptyEmployee());
 
   const [isEditing, setIsEditing] = useState(true);
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -34,7 +41,6 @@ export const EmployeeForm = () => {
       const employeeToEdit = employees.find(
         (employee) => employee.employee_id === employee_id
       );
-
       if (employeeToEdit) {
         setEmployee({ ...employeeToEdit });
         setIsEditing(false);
@@ -56,13 +62,17 @@ export const EmployeeForm = () => {
   );
 
   const handleAddNewEmployee = useCallback(() => {
-    dispatch(addEmployee(employee));
-    setIsDialogOpen(true);
+    if (formRef.current.reportValidity()) {
+      dispatch(addEmployee(employee));
+      setIsDialogOpen(true);
+    }
   }, [dispatch, employee]);
 
   const handleEditEmployee = useCallback(() => {
-    dispatch(editEmployee(employee));
-    setIsDialogOpen(true);
+    if (formRef.current.reportValidity()) {
+      dispatch(editEmployee(employee));
+      setIsDialogOpen(true);
+    }
   }, [dispatch, employee]);
 
   const handleCancel = useCallback(() => {
@@ -98,6 +108,7 @@ export const EmployeeForm = () => {
         }}
       >
         <Box
+          ref={formRef}
           component="form"
           sx={{
             display: "flex",
@@ -116,6 +127,10 @@ export const EmployeeForm = () => {
               value={employee.first_name}
               disabled={!isEditing}
               onChange={(event) =>
+                // setEmployee({
+                //   ...employee,
+                //   ["first_name"]: event.target.value,
+                // })
                 inputOnChange("first_name", event.target.value)
               }
             />
@@ -170,9 +185,8 @@ export const EmployeeForm = () => {
               onChange={(event) => inputOnChange("salary", event.target.value)}
             />
           </div>
-          <div style={{ display: "flex", gap: "24px" }}>
+          <div style={{ display: "flex", gap: "24px", width: "49%" }}>
             <TextField
-              required
               label="Comisión"
               type="number"
               value={employee.commission_pct}
@@ -182,7 +196,6 @@ export const EmployeeForm = () => {
               }
             />
           </div>
-
           <div style={{ display: "flex", gap: "24px" }}>
             {employee_id ? (
               isEditing ? (
@@ -223,11 +236,12 @@ export const EmployeeForm = () => {
           </div>
         </Box>
       </Container>
+
       <Dialog
         isOpen={isDialogOpen}
         title={
           employee_id
-            ? "¡Se ha editado correctamente el empleado!"
+            ? `¡Se ha editado correctamente el empleado ${employee.last_name} ${employee.first_name}!`
             : "¡Se ha guardado correctamente el empleado!"
         }
         closeLabel="Aceptar"
