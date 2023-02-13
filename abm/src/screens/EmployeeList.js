@@ -111,7 +111,7 @@ export const EmployeeList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {employeesToDisplay.length ? (
+              {employees.length ? (
                 employeesToDisplay.map((row) => (
                   <TableRow hover tabIndex={-1} key={row.employee_id}>
                     {columns.map((column) => {
