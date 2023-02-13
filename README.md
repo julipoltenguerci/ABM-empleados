@@ -5,14 +5,13 @@ Se desarrollara una aplicación que tenga como fin gestionar los datos de los RR
 <br>
 Tecnologías utilizadas:
 <br>
-<br>
 - ReactJS como librería frontend.
 <br>
 - Redux como librería para manejo de estados.
 <br>
 - React Router como librería para manejo de múltiples vistas y navegación entre las mismas.
 <br>
-## Intalación
+# Intalación
 <br>
 npm install
 <br>
