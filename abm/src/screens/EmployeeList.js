@@ -99,7 +99,11 @@ export const EmployeeList = () => {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{ top: 57, minWidth: column.minWidth }}
+                    style={{
+                      top: 57,
+                      minWidth: column.minWidth,
+                      fontWeight: "bold",
+                    }}
                   >
                     {column.label}
                   </TableCell>
