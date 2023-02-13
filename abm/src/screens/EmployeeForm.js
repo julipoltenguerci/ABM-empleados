@@ -19,7 +19,7 @@ const getEmptyEmployee = () => ({
 });
 
 export const EmployeeForm = () => {
-  // --------- HOOKS ---------
+  // ------------ HOOKS ------------
   const dispatch = useDispatch();
 
   const { employee_id } = useParams();
@@ -51,7 +51,7 @@ export const EmployeeForm = () => {
     }
   }, [employee_id, employees]);
 
-  // --------- FUNCTIONS ---------
+  // ------------ FUNCTIONS ------------
   const inputOnChange = useCallback(
     (key, value) =>
       setEmployee({
@@ -92,6 +92,7 @@ export const EmployeeForm = () => {
     }
   }, [employee_id, navigate]);
 
+  // ------------ RENDERS ------------
   return (
     <>
       <PageTitle>
@@ -108,6 +109,7 @@ export const EmployeeForm = () => {
         }}
       >
         <Box
+          //Referencia objeto html del form para acceso al método report validity y mostrar msj de validación
           ref={formRef}
           component="form"
           sx={{
@@ -127,10 +129,6 @@ export const EmployeeForm = () => {
               value={employee.first_name}
               disabled={!isEditing}
               onChange={(event) =>
-                // setEmployee({
-                //   ...employee,
-                //   ["first_name"]: event.target.value,
-                // })
                 inputOnChange("first_name", event.target.value)
               }
             />
@@ -196,7 +194,9 @@ export const EmployeeForm = () => {
               }
             />
           </div>
+
           <div style={{ display: "flex", gap: "24px" }}>
+            {/* Save, edit or cancel buttons */}
             {employee_id ? (
               isEditing ? (
                 <>

@@ -43,7 +43,7 @@ const columns = [
   },
 ];
 export const EmployeeList = () => {
-  // --------- HOOKS ---------
+  // ------------ HOOKS ------------
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ export const EmployeeList = () => {
 
   const [employeeToDelete, setEmployeeToDelete] = useState();
 
-  // --------- FUNCTIONS ---------
+  // ------------ FUNCTIONS ------------
 
   const handleChangePage = useCallback((_, newPage) => setPage(newPage), []);
 
@@ -85,6 +85,8 @@ export const EmployeeList = () => {
     setEmployeeToDelete();
   }, [dispatch, employeeToDelete]);
 
+  // ------------ RENDERS ------------
+
   return (
     <>
       <PageTitle>Gestor de Empleados - Vortex IT</PageTitle>
@@ -106,29 +108,27 @@ export const EmployeeList = () => {
             </TableHead>
             <TableBody>
               {employeesToDisplay.length ? (
-                employeesToDisplay
-                  //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <TableRow hover tabIndex={-1} key={row.employee_id}>
-                      {columns.map((column) => {
-                        const value = row[column.id];
+                employeesToDisplay.map((row) => (
+                  <TableRow hover tabIndex={-1} key={row.employee_id}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
 
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.component
-                              ? column.component(
-                                  row,
-                                  handleViewAction,
-                                  handleDeleteAction
-                                )
-                              : column.format
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  ))
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.component
+                            ? column.component(
+                                row,
+                                handleViewAction,
+                                handleDeleteAction
+                              )
+                            : column.format
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))
               ) : (
                 <TableRow>
                   <TableCell
@@ -152,6 +152,7 @@ export const EmployeeList = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+
       {employeeToDelete && (
         <Dialog
           isOpen={true}
